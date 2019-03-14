@@ -32,14 +32,14 @@ def agent_portrayal(agent):
 task_slider = UserSettableParameter('slider', "Number of Task", 3, 1, 10, 1)
 empty_slider = UserSettableParameter('slider', "Number of Empty Boxes", 10, 1, 45, 1)
 full_slider = UserSettableParameter('slider', "Number of Full Boxes", 10, 1, 20, 1)
+agent_slider = UserSettableParameter('slider', "Number of Robot", 2, 1, 3, 1)
 
 grid = CanvasGrid(agent_portrayal, 10, 10, 500, 500)
 
-times = 1
 server = ModularServer(FactoryModel,
                        [grid],
                        "My Test Model",
-                       {"N": 1, "num_task": task_slider,
-                                "num_empty": empty_slider,
-                                "num_full": full_slider})
-time
+                       {"N": agent_slider,
+                        "num_task": task_slider,
+                        "num_empty": empty_slider,
+                        "num_full": full_slider})

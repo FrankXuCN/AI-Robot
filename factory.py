@@ -189,6 +189,7 @@ class FactoryModel(Model):
           pos = random.choice(full)
           if pos not in self.task:
             self.task.append(pos)
+        print("tasks are ",self.task)
 
         # Create Wall agents
         self.createWall()
@@ -227,11 +228,7 @@ class FactoryModel(Model):
     def createRobot(self, num_agents):
         type = 0
         agents = []
-        while len(agents) == num_agents:
-            a = RobotAgent(self.ttl, self, type, self.task, self.fmap, self.boxes)
-            self.schedule.add(a)
-            self.ttl += 1
-
+        while len(agents) < num_agents:
             # add an agent into a random cell
             x = random.randrange(self.grid.width)
             y = random.randrange(self.grid.height)
@@ -239,8 +236,12 @@ class FactoryModel(Model):
                 and (x,y) not in self.boxes[1]
                 and (x,y) not in self.boxes[0]
                 and (x,y) not in agents):
+                a = RobotAgent(self.ttl, self, type, self.task, self.fmap, self.boxes)
+                self.schedule.add(a)
+                self.ttl += 1
                 self.grid.place_agent(a,(x,y))
                 agents.append((x,y))
+        print("start from ", agents)
 #            self.grid.place_agent(a,(9,0))
 
     def step(self):
