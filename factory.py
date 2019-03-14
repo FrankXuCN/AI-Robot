@@ -184,12 +184,13 @@ class FactoryModel(Model):
         self.boxes = [empty,full]
 
         # Create tasks
-        self.task = []
-        for i in range(num_task):
-          pos = random.choice(full)
-          if pos not in self.task:
-            self.task.append(pos)
-        print("tasks are ",self.task)
+        tasks = []
+        while len(tasks) < N*num_task:
+          for i in range(num_task):
+            pos = random.choice(full)
+            if pos not in tasks:
+              tasks.append(pos)
+        print("tasks are ",tasks)
 
         # Create Wall agents
         self.createWall()
@@ -198,7 +199,7 @@ class FactoryModel(Model):
         self.createBox()
 
         # Create Robot agents
-        self.createRobot(N)
+        self.createRobot(N, num_task, tasks)
 
     def createWall(self):
         type = 1
@@ -225,7 +226,7 @@ class FactoryModel(Model):
           self.schedule.add(a)
           self.ttl += 1
 
-    def createRobot(self, num_agents):
+    def createRobot(self, num_agents, num_task, tasks):
         type = 0
         agents = []
         while len(agents) < num_agents:
@@ -236,9 +237,11 @@ class FactoryModel(Model):
                 and (x,y) not in self.boxes[1]
                 and (x,y) not in self.boxes[0]
                 and (x,y) not in agents):
-                a = RobotAgent(self.ttl, self, type, self.task, self.fmap, self.boxes)
+                a = RobotAgent(self.ttl, self, type,
+                               tasks[:num_task], self.fmap, self.boxes)
                 self.schedule.add(a)
                 self.ttl += 1
+                tasks = tasks[num_task:]
                 self.grid.place_agent(a,(x,y))
                 agents.append((x,y))
         print("start from ", agents)
