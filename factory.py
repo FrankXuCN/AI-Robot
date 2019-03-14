@@ -178,7 +178,7 @@ class FactoryModel(Model):
             if self.fmap[x][y] == 0:
                 if len(empty)<num_empty and ((x,y) not in empty):
                     empty.append((x,y))
-                elif (x,y) not in full:
+                elif (x,y) not in full and ((x,y) not in empty):
                     full.append((x,y))
         # [[empty boxes], [full boxes]]
         self.boxes = [empty,full]
